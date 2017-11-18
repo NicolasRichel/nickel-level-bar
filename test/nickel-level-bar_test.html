@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		
+		<title>nickel-level-bar test</title>
+		
+		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../web-component-tester/browser.js"></script>
+		
+		<link rel="import" href="../nickel-level-bar.html">
+	</head>
+	<body>
+
+		<test-fixture id="BasicTestFixture">
+			<template>
+				<nickel-level-bar></nickel-level-bar>
+			</template>
+		</test-fixture>
+
+		<script>
+			suite('nickel-level-bar', function() {
+			
+				test('instantiating the element with default properties works', function() {
+					let element = fixture('BasicTestFixture');
+					
+					// Test properties default values :
+					assert.equal(element.minValue, 0);
+					assert.equal(element.maxValue, 100);
+					assert.equal(element.level, 0);
+					assert.equal(element.size, 100);
+					assert.equal(element.value, 0);
+					
+					// Test element default style :
+					/*const localDom = element.shadowRoot;
+					assert.equal(localDom.querySelector('#bar').style.backgroundColor, 'white');
+					assert.equal(localDom.querySelector('#level').style.backgroundColor, 'green');*/
+					
+					// Test element methods :
+					element.set('level', 10);
+					assert.equal(element.minValue, 0);
+					assert.equal(element.maxValue, 100);
+					assert.equal(element.level, 10);
+					assert.equal(element.size, 100);
+					assert.equal(element.value, 10);
+					//assert.equal(localDom.getElementById('level').style.width, '10px');
+				});
+			
+			});
+		</script>
+
+	</body>
+</html>

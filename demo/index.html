@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>nickel-level-bar demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../nickel-level-bar.html">
+
+    <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+
+      <h3>Basic nickel-level-bar demo</h3>
+      <demo-snippet>
+        <style>
+          #level {
+            margin: 0 5px;
+            transform: translateY(25%);
+          }
+          #value {
+            margin: 0 5px;
+          }
+        </style>
+        <template>
+          <nickel-level-bar></nickel-level-bar>
+          Level : <input id="level" type="range" min="0" max="100" value="0" onchange="setLevel()" /><br/>
+          Value : <span id="value">0</span>
+          <script>
+            function setLevel() {
+              let level = document.getElementById('level').value;
+              let elem = document.querySelector('nickel-level-bar');
+              elem.level = level;
+              document.getElementById('value').textContent = elem.value;
+            }
+          </script>
+        </template>
+      </demo-snippet>
+
+      <h3>nickel-level-bar with label and styles</h3>
+      <demo-snippet>
+        <template>
+          <style is="custom-style">
+            nickel-level-bar#styled {
+              --level-bar-level-color: red;
+              --level-bar-background-color: #bebebe;
+              --level-bar-height: 12px;
+              --level-bar-border-width: 3px;
+              --level-bar-border-radius: 2px;
+            }
+          </style>
+          <nickel-level-bar id="styled" size="300" level="30" label="XP" show-label></nickel-level-bar>
+        </template>
+      </demo-snippet>
+
+    </div>
+  </body>
+</html>

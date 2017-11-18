@@ -1,0 +1,165 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="nickel-level-bar">
+  <template>
+    <custom-style>
+      <style is="custom-style">
+        :host {
+          display: block;
+          margin: 0;
+          padding: 0;
+        }
+
+        #container {
+          margin: var(--level-bar-margin, 5px);
+          padding: var(--level-bar-padding, 0);
+          @apply --level-bar-container-mixin;
+        }
+
+        #label {
+          /*display: inline-block;*/
+          @apply --level-bar-label-mixin;
+        }
+
+        #bar {
+          display: inline-block;
+          vertical-align: middle;
+          width: 0px;
+          height: var(--level-bar-height, 20px);
+          margin: 0;
+          padding: 0;
+          border: var(--level-bar-border-width, 1px) solid var(--level-bar-border-color, black);
+          border-radius: var(--level-bar-border-radius, 4px);
+          background-color: var(--level-bar-background-color, white);
+        }
+
+        #level {
+          width: 0px;
+          height: var(--level-bar-height, 20px);
+          margin: 0;
+          border: none;
+          border-radius: var(--level-bar-border-radius, 4px);
+          background-color: var(--level-bar-level-color, green);
+        }
+      </style>
+    </custom-style>
+    <div id="container">
+      <div id="label" hidden$="[[!showLabel]]">[[label]] :</div>
+      <div id="bar"><div id="level"></div></div>
+    </div>
+  </template>
+  <script>
+    'use strict';
+    /**
+     * # Nickel Level Bar
+     * A very simple and customizable level bar (progress bar).
+     *
+     * ### styling
+     * `<nickel-level-bar>` provides the following custom properties and mixins
+     * for styling :
+     *
+     *  Custom Property               | Description                              | Default
+     * -------------------------------|------------------------------------------|---------
+     * `--level-bar-margin`           | margin around the level bar              | `5px`
+     * `--level-bar-padding`          | padding of the level bar                 | `0px`
+     * `--level-bar-height`           | thickness of the level bar               | `20px`
+     * `--level-bar-border-width`     | width of the level bar border            | `1px`
+     * `--level-bar-border-color`     | color of the level bar border            | `black`
+     * `--level-bar-border-radius`    | radius of the level bar border           | `4px`
+     * `--level-bar-background-color` | color of the level bar inner background  | `white`
+     * `--level-bar-level-color`      | background color of the level `<div>`    | `green`
+     * `--level-bar-container-mixin`  | mixin applied to the level bar container | `{}`
+     * `--level-bar-label-mixin`      | mixin applied to the level bar label     | `{}`
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class NickelLevelBar extends Polymer.Element {
+
+      static get is() { return 'nickel-level-bar'; }
+
+      static get properties() {
+        return {
+          /** Level bar label. */
+          label: String,
+
+          /** Level bar level */
+          level: {
+            type: Number,
+            value: 0,
+            observer: '_setLevel'
+          },
+
+          /** Maximum level value. */
+          maxValue: {
+            type: Number,
+            value: 100
+          },
+
+          /** Minimum level value. */
+          minValue: {
+            type: Number,
+            value: 0
+          },
+
+          /** Indicates wether to show the label or not */
+          showLabel: {
+            type: Boolean,
+            value: false
+          },
+
+          /** Size of the level bar in pixels */
+          size: {
+            type: Number,
+            value: 100,
+            observer: '_setSize'
+          },
+
+          /**
+           * Current value indicated by the bar (derived from `minValue`,
+           * `maxValue` and `level` properties).
+           */
+          value: {
+            type: Number,
+            computed: '_getValue(minValue, maxValue, level)'
+          }
+        };
+      }
+
+      /**
+       * Computes the value of the level bar according to the `minValue`,
+       * `maxValue` and `level` properties.
+       *
+       * @param {Number} minValue current `minValue` property value
+       * @param {Number} maxValue current `maxValue` property value
+       * @param {Number} level current `level` property value
+       * @return {Number} `value` of the level bar
+       */
+      _getValue(minValue, maxValue, level) {
+        return (maxValue - minValue)*level/100;
+      }
+
+      /**
+       * Sets the CSS `width` property of the `<div>` element representing the
+       * level bar according to the value of the `size` property.
+       *
+       * @param {Number} size size of the bar in pixels
+       */
+      _setSize(size) {
+        this.$.bar.style.width = `${size}px`;
+      }
+
+      /**
+       * Sets the level bar layout according to the `level` property value.
+       *
+       * @param {Number} level current level value
+       */
+      _setLevel(level) {
+        this.level = level>100 ? 100 : level;
+        this.$.level.style.width = `${Math.round(this.size*level/100)}px`;
+      }
+    }
+    window.customElements.define(NickelLevelBar.is, NickelLevelBar);
+  </script>
+</dom-module>
